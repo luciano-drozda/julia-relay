@@ -1,0 +1,5 @@
+{
+  "input": {
+    "_script": "echo \"hello from $(hostname), job $SLURM_JOB_ID, unattended run\" > hello.txt\n"
+  }
+}
