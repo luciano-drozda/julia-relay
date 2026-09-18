@@ -1,0 +1,9 @@
+{
+  "input": {
+    "_script": "export PATH=/ccc/scratch/cont002/cerfacs/drozdalu/software/julia-1.13.0/bin:$PATH\nexport JULIA_DEPOT_PATH=/ccc/scratch/cont002/cerfacs/drozdalu/.julia\necho \"=== module list ===\"\nmodule list 2>&1\necho \"=== julia CUDA check ===\"\njulia -e 'using CUDA; println(\"CUDA.functional(): \", CUDA.functional()); CUDA.versioninfo()'\n",
+    "_partition": "a100",
+    "_account": "cerfacs@a100",
+    "_gres": "gpu:1",
+    "_time": "00:10:00"
+  }
+}
