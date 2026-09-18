@@ -1,9 +1,0 @@
-{
-  "input": {
-    "_script": "export PATH=/ccc/scratch/cont002/cerfacs/drozdalu/software/julia-1.13.0/bin:$PATH\nexport JULIA_DEPOT_PATH=/ccc/scratch/cont002/cerfacs/drozdalu/.julia\njulia -e '\nusing CUDA\nimport JACC\nprintln(\"node: \", gethostname())\nprintln(\"device: \", CUDA.name(CUDA.device()))\na = JACC.zeros(Float32, 1024)\nJACC.parallel_for(1024, (i, x) -> x[i] = Float32(i), a)\nran_on_gpu = a isa CuArray\ncorrect = Array(a) == Float32.(1:1024)\nprintln(\"jacc_ran_on_gpu: \", ran_on_gpu)\nprintln(\"jacc_correct: \", correct)\nif ran_on_gpu && correct\n    println(\"PASS: single_gpu\")\nelse\n    println(\"FAIL: single_gpu\")\nend\n'\n",
-    "_partition": "a100",
-    "_account": "cerfacs@a100",
-    "_gres": "gpu:nvidia:1",
-    "_time": "00:10:00"
-  }
-}

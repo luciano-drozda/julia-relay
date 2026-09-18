@@ -1,9 +1,0 @@
-{
-  "input": {
-    "_script": "echo \"=== SLURM GPU env vars ===\"\necho \"CUDA_VISIBLE_DEVICES=$CUDA_VISIBLE_DEVICES\"\necho \"SLURM_JOB_GPUS=$SLURM_JOB_GPUS\"\necho \"SLURM_GPUS_ON_NODE=$SLURM_GPUS_ON_NODE\"\necho \"SLURM_STEP_GPUS=$SLURM_STEP_GPUS\"\necho \"=== nvidia-smi ===\"\nnvidia-smi\n",
-    "_partition": "a100",
-    "_account": "cerfacs@a100",
-    "_gres": "gpu:nvidia:1",
-    "_time": "00:05:00"
-  }
-}
