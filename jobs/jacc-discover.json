@@ -1,0 +1,9 @@
+{
+  "input": {
+    "_script": "export PATH=/ccc/scratch/cont002/cerfacs/drozdalu/software/julia-1.13.0/bin:$PATH\nexport JULIA_DEPOT_PATH=/ccc/scratch/cont002/cerfacs/drozdalu/.julia\njulia -e 'import JACC; JACC.set_backend(:cuda)'\njulia -e '\nimport JACC\nusing CUDA\nprintln(\"=== JACC.parallel_for ===\")\nfor m in methods(JACC.parallel_for); println(m); end\nprintln(\"=== JACC.array ===\")\nfor m in methods(JACC.array); println(m); end\nprintln(\"=== JACC.zeros ===\")\nfor m in methods(JACC.zeros); println(m); end\nprintln(\"=== quick kernel test ===\")\na = JACC.zeros(Float32, 8)\nJACC.parallel_for(8, (i, x) -> x[i] = Float32(i), a)\nprintln(Array(a))\n'\n",
+    "_partition": "a100",
+    "_account": "cerfacs@a100",
+    "_gres": "gpu:nvidia:1",
+    "_time": "00:10:00"
+  }
+}
