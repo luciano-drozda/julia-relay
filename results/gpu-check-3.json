@@ -1,0 +1,1 @@
+{"slurm_job_id": "1669158", "slurm_state": "COMPLETED", "exit_code": "6", "stdout": "=== SLURM GPU env vars ===\nCUDA_VISIBLE_DEVICES=\nSLURM_JOB_GPUS=\nSLURM_GPUS_ON_NODE=\nSLURM_STEP_GPUS=\n=== nvidia-smi ===\nNo devices were found\n", "stderr": ""}
