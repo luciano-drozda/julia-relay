@@ -1,0 +1,12 @@
+{
+  "input": {
+    "_script": "export PATH=/ccc/scratch/cont002/cerfacs/drozdalu/software/julia-1.13.0/bin:$PATH\nexport JULIA_DEPOT_PATH=/ccc/scratch/cont002/cerfacs/drozdalu/.julia\nmpirun -np 2 --map-by ppr:1:node julia -e '\nusing MPI, CUDA\nMPI.Init()\ncomm = MPI.COMM_WORLD\nrank = MPI.Comm_rank(comm)\nCUDA.device!(0)\nbuf = CUDA.fill(Float32(rank), 4)\nif rank == 0\n    MPI.Send(buf, comm; dest=1, tag=0)\nelse\n    MPI.Recv!(buf, comm; source=0, tag=0)\n    ok = Array(buf) == Float32[0.0, 0.0, 0.0, 0.0]\n    println(ok ? \"PASS: multi_node\" : \"FAIL: multi_node\")\nend\n'\n",
+    "_partition": "a100",
+    "_account": "cerfacs@a100",
+    "_nodes": "2",
+    "_ntasks_per_node": "1",
+    "_gres": "gpu:nvidia:1",
+    "_cpus_per_task": "32",
+    "_time": "00:10:00"
+  }
+}
