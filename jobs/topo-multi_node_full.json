@@ -1,0 +1,12 @@
+{
+  "input": {
+    "_script": "export PATH=/ccc/scratch/cont002/cerfacs/drozdalu/software/julia-1.13.0/bin:$PATH\nexport JULIA_DEPOT_PATH=/ccc/scratch/cont002/cerfacs/drozdalu/.julia\nmpirun -np 8 --map-by ppr:4:node julia -e '\nusing MPI, CUDA\nimport JACC\nMPI.Init()\ncomm = MPI.COMM_WORLD\nrank = MPI.Comm_rank(comm)\nnranks = MPI.Comm_size(comm)\nlocal_rank = parse(Int, get(ENV, \"OMPI_COMM_WORLD_LOCAL_RANK\", \"0\"))\nndev = length(CUDA.devices())\nlocal_dev = ndev == 1 ? 0 : (local_rank % ndev)\nCUDA.device!(local_dev)\n\na = JACC.zeros(Float32, 4)\nJACC.parallel_for(4, (i, x) -> x[i] = Float32(rank + 1), a)\n\npath = \"jacc_array_direct\"\nresult = zeros(Float32, 4)\ntry\n    result_dev = similar(a)\n    MPI.Allreduce!(a, result_dev, MPI.SUM, comm)\n    result = Array(result_dev)\ncatch e\n    global path = \"host_array_fallback\"\n    result_host = zeros(Float32, 4)\n    MPI.Allreduce!(Array(a), result_host, MPI.SUM, comm)\n    global result = result_host\nend\n\nexpected = Float32(sum(1:nranks))\nok = all(result .== expected)\nif rank == 0\n    println(\"local_dev=\", local_dev, \" path=\", path, \" nranks=\", nranks, \" allreduce_correct=\", ok)\n    println(ok ? \"PASS: multi_node_full\" : \"FAIL: multi_node_full\")\nend\n'\n",
+    "_partition": "a100",
+    "_account": "cerfacs@a100",
+    "_nodes": "2",
+    "_ntasks_per_node": "4",
+    "_gres": "gpu:nvidia:4",
+    "_cpus_per_task": "32",
+    "_time": "00:10:00"
+  }
+}
